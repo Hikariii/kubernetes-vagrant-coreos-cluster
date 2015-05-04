@@ -320,6 +320,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
           mount_options = ""
           disabled = false
           nfs =  true
+          create =  false
           if mount['mount_options']
             mount_options = mount['mount_options']
           end
@@ -329,13 +330,17 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
           if mount['nfs']
             nfs = mount['nfs']
           end
+          if mount['create']
+            create = mount['create']
+          end
           if File.exist?(File.expand_path("#{mount['source']}"))
             if mount['destination']
               kHost.vm.synced_folder "#{mount['source']}", "#{mount['destination']}",
                 id: "#{mount['name']}",
                 disabled: disabled,
                 mount_options: ["#{mount_options}"],
-                nfs: nfs
+                nfs: nfs,
+                create: create
             end
           end
         end
